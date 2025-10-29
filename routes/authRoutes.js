@@ -21,35 +21,44 @@ router.get('/login', (req, res) => {
 
 // router for the register authentication..
 router.post('/register', async (req, res)=>{
-  const {username, password} = req.body;
+  const {name, email, password, role} = req.body;
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await pool.query('INSERT INTO users (email, password) VALUES ($1, $2)', [
-      username,
-      hashedPassword
+    const result = await pool.query('INSERT INTO users (name, email, password_hash, role) VALUES ($1, $2, $3, $4) RETURNING id, name, role', [
+      name,
+      email,
+      hashedPassword,
+      role
     ])
+    
+    req.session.user = result.rows[0];
 
-    res.render('dashboard');
+    if (role === "student") return res.redirect('/student/dashboard');
+    if (role === "lecturer") return res.redirect('/lecturer/dashboard');
 
   } catch (error) {
     console.log(error);
-    res.send("error registring user")
+    res.send("error registering user")
   }
 })
 
 // router for login authentication
 router.post('/login', async (req, res) => {
-  const {username, password} = req.body;
+  const {email, password} = req.body;
 
   try {
-    const result = await pool.query('SELECT * FROM users WHERE email = $1', [username]);
+    const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
     const user = result.rows[0];
+    console.log(user);
     
-    if(user && (await bcrypt.compare(password, user.password))) {
-      res.render('dashboard');
+    req.session.user = {id: user.id, name: user.name, role: user.role};
+
+    if(user && (await bcrypt.compare(password, user.password_hash))) {
+      if (user.role === "student") return res.redirect('/student/dashboard');
+      if (user.role === "lecturer") return res.redirect('/lecturer/dashboard');
     } else {
       res.send("invalid username or password");
     }
@@ -58,5 +67,13 @@ router.post('/login', async (req, res) => {
     res.send("error logging in")
   }
 })
+
+// logout route..
+router.get('/logout', (req, res)=>{
+  req.session.destroy(()=>{
+    res.redirect('/login');
+  })
+})
+
 
 export default router;

@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css">
-    <title>Dashboard page</title>
+    <title>Lecturer Dashboard page</title>
 </head>
 <body>
     <div class="card">
-        <h1>Welcome to the Dashboard page!</h1>
+        <h1>Welcome <%= user.name %> (Lecturer) </h1>
+        <p>This is Your Lecturer Dashboard.</p>
         <div style="margin-top: 1rem;">
-            <a href="/">Go Home</a>
+            <a href="/logout">Logout</a>
         </div>
     </div>
 </body>
