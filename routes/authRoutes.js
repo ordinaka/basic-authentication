@@ -52,9 +52,13 @@ router.post('/login', async (req, res) => {
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
 
     const user = result.rows[0];
-    console.log(user);
     
-    req.session.user = {id: user.id, name: user.name, role: user.role};
+    // save session
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      role: user.role
+    };
 
     if(user && (await bcrypt.compare(password, user.password_hash))) {
       if (user.role === "student") return res.redirect('/student/dashboard');

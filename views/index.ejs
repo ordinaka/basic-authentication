@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/style.css">
-    <title>home page</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/style.css" />
+  <title>Auth App - UNN Portal</title>
 </head>
 <body>
-    <div class="card">
-        <h1>Welcome to Auth App 🔐</h1>
-        <p>Select an option below to continue:</p>
-        <div style="margin-top: 1rem;">
-            <a href="/login">Login</a> | <a href="/register">Register</a>
-        </div>
-    </div>
+  <%- include('partials/navbar') %>
 
-    <div class="footer">Built with 💛 by Vicky</div>
+  <div class="card">
+    <h1>Welcome to UNN NACOS Resource Hub Portal</h1>
+    <p>Choose an option below to continue.</p>
+    <div style="margin-top: 1rem;">
+      <a href="/login">Login</a> | <a href="/register">Register</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    Built with 💛 by Virus — Computer Science, UNN
+  </div>
 </body>
 </html>
