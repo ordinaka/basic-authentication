@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/style.css" />
+  <title>Student Materials | Resource Hub</title>
+</head>
+<body>
+
+  <%- include('partials/navbar' ,{user: user}) %>
+
+  <div class="dashboard-container">
+    <h1>Welcome, <%= user ? user.name : 'Student' %>!</h1>
+    <p class="subtitle">You are logged in as a student.</p>
+
+    <!-- FILTER / SEARCH -->
+    <div class="filter-card">
+      <form id="filterForm" method="GET" action="/student/dashboard/materials" class="filter-form">
+        <div class="filter-row">
+          <label for="year">Year</label>
+          <select name="year" id="year">
+            <option value="">All Years</option>
+            <option value="100">100 Level</option>
+            <option value="200">200 Level</option>
+            <option value="300">300 Level</option>
+            <option value="400">400 Level</option>
+          </select>
+        </div>
+
+        <div class="filter-row">
+            <label for="course_code">Course Code</label>
+            <select name="course_code" id="course_code">
+                <option value="">Select Course Code</option>
+                <option value="CSC101">CSC101</option>
+                <option value="CSC202">CSC202</option>
+                <option value="CSC303">CSC303</option>
+                <option value="CSC404">CSC404</option>
+            </select>
+        </div>
+          <button type="submit" class="btn primary">Filter</button>
+      </form>
+    </div>
+
+    <h2 class="section-title">Recently Uploaded</h2>
+
+    <div class="materials-list">
+      <% if (materials && materials.length > 0) { %>
+        <% materials.forEach(m => { %>
+          <div class="material-item">
+            <div class="material-info">
+              <h3><%= m.course_code %> - <%= m.course_title %></h3>
+              <p class="meta">
+                <span class="file"><%= m.filename || m.file_path.split('/').pop() %></span>
+                &nbsp;|&nbsp; Lecturer: <%= m.uploaded_by.name || 'N/A' %>
+                &nbsp;|&nbsp; Uploaded: 
+                <%= new Date(m.uploaded_at || m.created_at || Date.now()).toLocaleString('en-GB', {
+                  year: 'numeric', month: 'short', day: 'numeric',
+                  hour: 'numeric', minute: '2-digit'
+                }) %>
+              </p>
+            </div>
+
+            <div class="material-actions">
+              <a class="download-btn" href="/student/dashboard/materials/download/<%= m.id %>">Download</a>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="no-materials">No materials found for this selection.</p>
+      <% } %>
+    </div>
+
+  </div>
+
+</body>
+</html>

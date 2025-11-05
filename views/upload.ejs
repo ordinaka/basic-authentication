@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">    
+    <title>upload page</title>
+</head>
+<body>
+    <%- include('partials/navbar', {user: user}) %>
+
+<div class="dashboard-container">
+  <h1>Welcome, <%= user ? user.name : 'Lecturer' %>!</h1>
+  <p class="subtitle">You are logged in as a lecturer.</p>
+  <h2>Upload Course Material</h2>
+
+
+  <form action="/lecturer/dashboard/upload" method="POST" enctype="multipart/form-data">
+    
+    <!--fetching all the courses from the database in the course table-->
+    <select name="course_id" required>
+        <option value="">Select Course</option>
+        <% courses.forEach(course => { %>
+            <option value="<%= course.id %>">
+                <%= course.course_code %> - <%= course.course_title %> (Year <%= course.year %>)
+            </option>
+        <% }) %>
+  </select>
+  <input type="file" name="material" accept=".pdf, .doc, .docx, .ppt, .pptx"  required />
+  <button type="submit">Upload</button>
+  </form>
+</div>
+
+</body>
+</html>

@@ -9,9 +9,19 @@
 <body>
   <%- include('partials/navbar', {user: user}) %>
 
-  <div class="card">
+  <div class="dashboard-container">
     <h1>Welcome <%= user.name %> (Lecturer)</h1>
     <p>This is your Lecturer Dashboard.</p>
+    <div>
+      <a href="/lecturer/dashboard/upload" class="">
+        Upload Course Material
+      </a>
+    </div>
+      <div>
+        <a href="/lecturer/dashboard/new-course" class="">
+        Create a new course
+        </a>
+      </div>
   </div>
 </body>
 </html>
