@@ -1,14 +1,26 @@
-/* GENERAL STYLES */
+/* =========================================================
+   GLOBAL STYLES
+   ========================================================= */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Courier New', Courier, monospace;
-  background: #f4f6f4;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   color: #333;
   height: 100vh;
+
+  /* === Background with transparent overlay === */
+  background: 
+    linear-gradient(rgba(244, 246, 244, 0.9), rgba(244, 246, 244, 0.9)), /* transparent overlay */
+    url('./images/nacos.jpg') no-repeat center center fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
-/* NAVBAR */
+/* =========================================================
+   NAVBAR
+   ========================================================= */
 .navbar {
   display: flex;
   justify-content: space-between;
@@ -17,6 +29,7 @@ body {
   color: white;
   padding: 1rem 2rem;
 }
+
 .logo-section {
   display: flex;
   gap: 1rem;
@@ -38,54 +51,64 @@ body {
   text-decoration: underline;
 }
 
-/* CARD CONTAINER */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+/* =========================================================
+   CARD CONTAINER
+   ========================================================= */
 .card {
   background: white;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  max-width: 90%;
+  width: 350px;
+  max-width: 80%;
   margin: 4rem auto;
   padding: 2rem;
   text-align: center;
 }
 
-.card h1 {
-  color: #026b3c;
-  margin-bottom: 1rem;
-}
+.card h1,
 .card h2 {
   color: #026b3c;
   margin-bottom: 1rem;
+  font-size: 22px;
   text-align: center;
 }
 
-
-/* FORMS */
+/* =========================================================
+   FORMS
+   ========================================================= */
 form {
   margin: 0;
   padding: 0;
-  text-align: left; /* Fix right shift due to center text in parent */
+  text-align: left; /* fixes right shift */
 }
 
 form input,
 form select,
 form button {
   width: 100%;
-  box-sizing: border-box; /* Keeps padding within width */
+  box-sizing: border-box;
   margin: 0.5rem 0;
   padding: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
-  display: block; /* Forces clean stacking alignment */
+  display: block;
 }
 
 form input:focus,
 form select:focus {
   border-color: #026b3c;
   outline: none;
-  box-shadow: 0 0 5px rgba(2, 107, 60, 0.3); /* nice UNN-green glow */
+  box-shadow: 0 0 5px rgba(2, 107, 60, 0.3);
 }
 
 form button {
@@ -100,16 +123,19 @@ form button:hover {
   background-color: #024f2e;
 }
 
-
-/* FOOTER */
+/* =========================================================
+   FOOTER
+   ========================================================= */
 .footer {
   text-align: center;
-  margin-top: 10rem;
+  margin-top: 20rem;
   color: #555;
   font-size: 0.9rem;
 }
 
-/* LINKS */
+/* =========================================================
+   LINKS
+   ========================================================= */
 a {
   color: #026b3c;
   text-decoration: none;
@@ -119,31 +145,23 @@ a:hover {
   text-decoration: underline;
 }
 
-.menu-toggle {
-  display: none;
-  background: none;
-  border: none;
-  color: white;
-  font-size: 1.8rem;
-  cursor: pointer;
-}
-
-
-
-/* ===== Filter + Materials (UNN green theme) ===== */
+/* =========================================================
+   DASHBOARD + FILTERS + MATERIALS
+   ========================================================= */
 .dashboard-container {
   max-width: 900px;
   width: 80%;
-  margin: 2rem auto 4rem;
+  margin: 5rem auto 4rem;
   padding: 0 1rem;
 }
+
 .filter-card {
-  max-width: 900px;
-  margin: 0 auto 1.25rem;
-  padding: 0.75rem 1rem;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  max-width: 900px;
+  margin: 0 auto 1.25rem;
+  padding: 0.75rem 1rem;
 }
 
 .filter-form {
@@ -172,6 +190,9 @@ a:hover {
   box-sizing: border-box;
 }
 
+/* =========================================================
+   BUTTONS
+   ========================================================= */
 .btn {
   border-radius: 6px;
   text-decoration: none;
@@ -185,7 +206,10 @@ a:hover {
   border-color: #026b3c;
 }
 
-.btn.primary:hover { background: #024f2e; border-color: #024f2e; }SELECT * FROM public.users
+.btn.primary:hover {
+  background: #024f2e;
+  border-color: #024f2e;
+}
 
 .btn.ghost {
   background: transparent;
@@ -193,6 +217,9 @@ a:hover {
   border-color: #cfe9dc;
 }
 
+/* =========================================================
+   MATERIALS LIST
+   ========================================================= */
 .section-title {
   max-width: 900px;
   margin: 1.25rem auto 0.5rem;
@@ -202,18 +229,15 @@ a:hover {
   font-weight: 600;
 }
 
-/* materials list container */
 .materials-list {
   max-width: 900px;
   margin: 0.5rem auto 3rem;
-  padding: 0;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   overflow: hidden;
 }
 
-/* each row */
 .material-item {
   display: flex;
   justify-content: space-between;
@@ -222,7 +246,9 @@ a:hover {
   border-bottom: 1px solid #f0f0f0;
 }
 
-.material-item:last-child { border-bottom: none; }
+.material-item:last-child {
+  border-bottom: none;
+}
 
 .material-info h3 {
   margin: 0 0 0.35rem 0;
@@ -237,8 +263,6 @@ a:hover {
 }
 
 /* actions */
-.material-actions { margin-left: 1rem; }
-
 .download-btn {
   background: #026b3c;
   color: #fff;
@@ -248,7 +272,9 @@ a:hover {
   font-weight: 700;
 }
 
-.download-btn:hover { background: #024f2e; }
+.download-btn:hover {
+  background: #024f2e;
+}
 
 /* empty state */
 .no-materials {
@@ -257,24 +283,9 @@ a:hover {
   color: #777;
 }
 
-/* Responsive: stack filter & rows on small screens */
-@media (max-width: 720px) {
-  .filter-form { flex-direction: column; align-items: stretch; }
-  .filter-row { width: 100%; min-width: 0; }
-  .filter-actions { justify-content: flex-start; }
-
-  .material-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-
-  .material-actions { width: 100%; display: flex; justify-content: flex-end; }
-  .download-btn { width: auto; }
-}
-
-
-/* flash styling */
+/* =========================================================
+   FLASH MESSAGES
+   ========================================================= */
 .flash {
   padding: 10px 20px;
   border-radius: 8px;
@@ -303,10 +314,9 @@ a:hover {
   100% { opacity: 0; display: none; }
 }
 
-
-
-
-/* ======== RESPONSIVE DESIGN ======== */
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
 @media (max-width: 768px) {
   .menu-toggle {
     display: block;
@@ -340,5 +350,16 @@ a:hover {
 
   .card {
     width: 250px;
-}
+  }
+
+  .filter-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .material-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
 }

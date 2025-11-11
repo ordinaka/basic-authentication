@@ -29,7 +29,7 @@ app.use(
       pool: pool,
       tableName: "session",
     }),
-    secret: process.env.SECRET,
+    secret: 'process.env.SECRET',
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 }, // 30 days
@@ -39,7 +39,7 @@ app.use(
 // switch that activate the flash messages
 // app.use(flash());
 
-// making flash available for ejs file.. like a global middleware for flash
+// making flash available for ejs file..like a global middleware for flash
 // app.use((req, res, next) => {
 //   const successMessages = req.flash('success_msg');
 //   const errorMessages = req.flash('error_msg');

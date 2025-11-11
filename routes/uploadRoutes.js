@@ -3,6 +3,7 @@ import multer from 'multer';
 import { pool } from '../db.js';
 import { isAuthenticated, isStudent } from './middlewareRoutes.js';
 
+// Since am using ESC not CJS so i have to import these..
 import path from 'path';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -64,7 +65,7 @@ router.post('/lecturer/dashboard/new-course', isAuthenticated, async (req, res) 
 
 // Get upload form page
 router.get('/lecturer/dashboard/upload', isAuthenticated, async (req, res) => {
-  const courses = await pool.query('SELECT * FROM courses ORDER BY year')
+  const courses = await pool.query('SELECT * FROM courses ORDER BY id')
   res.render('upload', {courses: courses.rows, user: req.session.user});
 })
 
@@ -93,23 +94,51 @@ router.post('/lecturer/dashboard/upload', isAuthenticated, upload.single("materi
 
 // Route to fetch and display materials with filtering
 router.get('/student/dashboard/materials',  isAuthenticated, isStudent,  async (req, res) => {
+  // get query parameters for filtering
   const {year, course_code} = req.query;
-  let query ="SELECT * FROM materials WHERE 1=1";
+
+  //join query to get materials along with course and lecturer details
+  let query =`
+    SELECT 
+      m.id, 
+      m.file_path, 
+      m.created_at,
+      c.course_code,
+      c.course_title,
+      c.year,
+      u.name AS lecturer_name
+    FROM materials m
+    JOIN courses c ON m.course_id = c.id
+    JOIN users u ON m.uploaded_by = u.id
+    WHERE 1=1`; // and 1=1 to simplify appending AND conditions
+
+  // array to hold query values
   const values = [];
 
   if (year) {
     values.push(year);
-    query += ` AND year = $${values.length}`;
+    query += ` AND c.year = $${values.length}`;
   }
 
   if (course_code) {
     values.push(course_code);
-    query += ` AND course_code = $${values.length}`;
+    query += ` AND c.course_code = $${values.length}`;
   }
 
+  query += ' ORDER BY m.created_at DESC';
+
   try {
+    // execute the query
     const result = await pool.query(query, values);
-    res.render('student-material', { materials: result.rows, user: req.session.user });
+    // fetch all courses for the filter dropdown
+    const courses = await pool.query('SELECT course_code, course_title FROM courses ORDER BY year');
+
+    // render the student-material view with fetched materials and courses
+    res.render('student-material', {
+      materials: result.rows,
+      courses: courses.rows,
+      user: req.session.user
+    });
   } catch (error) {
     console.error('Error fetching materials:', error); 
     res.status(500).send('Internal Server Error');    
@@ -120,9 +149,20 @@ router.get('/student/dashboard/materials',  isAuthenticated, isStudent,  async (
 // Route to download material by id
 router.get('/student/dashboard/materials/download/:id', async (req, res) => {
   const { id } = req.params;
-  const rows = await pool.query("SELECT file_path, course_title FROM materials WHERE id = $1", [id]);
+  
+  const query = `
+  SELECT 
+    m.file_path, 
+    c.course_title 
+  FROM materials m
+  JOIN courses c ON m.course_id = c.id
+  WHERE m.id = $1`
 
-  if (rows.rowCount === 0) {
+  try {
+
+    const rows = await pool.query(query, [id]);
+
+    if (rows.rowCount === 0) {
     return res.status(404).send('Material not found');
   }
 
@@ -138,6 +178,10 @@ router.get('/student/dashboard/materials/download/:id', async (req, res) => {
     }
   });
 
+  } catch (error) {
+    console.error('Error downloading file:', error);
+    res.status(500).send('Internal Server Error');
+  }
 })
 
 

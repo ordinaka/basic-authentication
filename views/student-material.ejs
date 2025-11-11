@@ -21,21 +21,20 @@
           <label for="year">Year</label>
           <select name="year" id="year">
             <option value="">All Years</option>
-            <option value="100">100 Level</option>
-            <option value="200">200 Level</option>
-            <option value="300">300 Level</option>
-            <option value="400">400 Level</option>
+            <option value="1">100 Level</option>
+            <option value="2">200 Level</option>
+            <option value="3">300 Level</option>
+            <option value="4">400 Level</option>
           </select>
         </div>
 
         <div class="filter-row">
             <label for="course_code">Course Code</label>
             <select name="course_code" id="course_code">
-                <option value="">Select Course Code</option>
-                <option value="CSC101">CSC101</option>
-                <option value="CSC202">CSC202</option>
-                <option value="CSC303">CSC303</option>
-                <option value="CSC404">CSC404</option>
+                <option value="">Select Course</option>
+                <% courses.forEach(c => { %>
+                  <option value="<%= c.course_code %>"><%= c.course_code %> - <%= c.course_title %></option>
+                <% }) %>
             </select>
         </div>
           <button type="submit" class="btn primary">Filter</button>
@@ -51,13 +50,13 @@
             <div class="material-info">
               <h3><%= m.course_code %> - <%= m.course_title %></h3>
               <p class="meta">
-                <span class="file"><%= m.filename || m.file_path.split('/').pop() %></span>
-                &nbsp;|&nbsp; Lecturer: <%= m.uploaded_by.name || 'N/A' %>
+                <span class="file"><%=m.file_path.split('/').pop() %></span>
                 &nbsp;|&nbsp; Uploaded: 
-                <%= new Date(m.uploaded_at || m.created_at || Date.now()).toLocaleString('en-GB', {
+                <%= new Date(m.created_at || Date.now()).toLocaleString('en-GB', {
                   year: 'numeric', month: 'short', day: 'numeric',
                   hour: 'numeric', minute: '2-digit'
-                }) %>
+                }) %> &nbsp;|&nbsp;
+                <span class="file">Lecturer: <%= m.lecturer_name %></span>
               </p>
             </div>
 
